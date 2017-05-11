@@ -1,0 +1,31 @@
+                Call  Number of calls made  Percentage of total calls
+                stat                  2713          36.255512495
+              signal                   978         13.0696244822
+                read                   950         12.6954430041
+               close                   879         11.7466256849
+        rt_sigreturn                   487         6.50808499265
+               wait4                   487         6.50808499265
+                pipe                   422         5.63944941868
+      rt_sigprocmask                   252         3.36763330215
+                open                   114          1.5234531605
+               fstat                    42        0.561272217025
+               fcntl                    30        0.400908726447
+                 brk                    24        0.320726981157
+                mmap                    23        0.307363356942
+        rt_sigaction                    14        0.187090739008
+            mprotect                    12        0.160363490579
+            getdents                    12        0.160363490579
+              execve                    11        0.146999866364
+              access                     8        0.106908993719
+               ioctl                     8        0.106908993719
+            readlink                     4       0.0534544968595
+          arch_prctl                     2       0.0267272484298
+           getrlimit                     2       0.0267272484298
+              munmap                     2       0.0267272484298
+              getcwd                     2       0.0267272484298
+               write                     1       0.0133636242149
+           setrlimit                     1       0.0133636242149
++++ exited with 0 +++
+                     1       0.0133636242149
+               chdir                     1       0.0133636242149
+          exit_group                     1       0.0133636242149

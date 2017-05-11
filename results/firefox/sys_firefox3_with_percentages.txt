@@ -1,0 +1,94 @@
+                Call  Number of calls made  Percentage of total calls
+            mprotect                105191         51.2127555988
+             madvise                 21880         10.6523855891
+             recvmsg                 21057         10.2517039922
+                poll                 20128          9.7994157741
+               futex                 18152         8.83739045764
+           getrusage                  5327         2.59347614411
+                read                  3552         1.72930866602
+               write                  2391         1.16407010711
+              writev                  2083          1.0141187926
+                mmap                  1886        0.918208373905
+                stat                   834        0.406037000974
+                open                   658         0.32035053554
+               close                   396        0.192794547225
+              access                   396        0.192794547225
+               fstat                   360        0.175267770204
+               lseek                   198       0.0963972736125
+               fcntl                   178       0.0866601752678
+              munmap                   123       0.0598831548199
+               lstat                    64        0.031158714703
+            getdents                    54       0.0262901655307
+               clone                    49       0.0238558909445
+           getrandom                    45       0.0219084712756
+        rt_sigaction                    43       0.0209347614411
+               uname                    31       0.0150925024343
+             geteuid                    31       0.0150925024343
+              getuid                    22       0.0107108081792
+               fsync                    19      0.00925024342746
+              getgid                    18      0.00876338851022
+             getegid                    18      0.00876338851022
+              unlink                    15      0.00730282375852
+           readahead                    13      0.00632911392405
+            recvfrom                    13      0.00632911392405
+               mkdir                    13      0.00632911392405
+              signal                     8      0.00389483933788
+             connect                     8      0.00389483933788
+              socket                     8      0.00389483933788
+             fstatfs                     8      0.00389483933788
+   inotify_add_watch                     7      0.00340798442064
+             sysinfo                     7      0.00340798442064
+              statfs                     7      0.00340798442064
+      rt_sigprocmask                     6      0.00292112950341
+          setsockopt                     6      0.00292112950341
+                pipe                     6      0.00292112950341
+        rt_sigreturn                     5      0.00243427458617
+               umask                     4      0.00194741966894
+                 brk                     4      0.00194741966894
+               wait4                     4      0.00194741966894
+--- SIGVTALRM {si_signo=SIGVTALRM, si_code=SI_TKILL, si_pid=7876, si_uid=1002} ---
+                     4      0.00194741966894
+           getresgid                     3       0.0014605647517
+            eventfd2                     3       0.0014605647517
+           getresuid                     3       0.0014605647517
+         getsockname                     3       0.0014605647517
+         getpeername                     3       0.0014605647517
+            readlink                     3       0.0014605647517
+            quotactl                     3       0.0014605647517
+           getrlimit                     3       0.0014605647517
+          arch_prctl                     2     0.000973709834469
+               utime                     2     0.000973709834469
+              gettid                     2     0.000973709834469
+              sendto                     2     0.000973709834469
+         sigaltstack                     2     0.000973709834469
+             symlink                     2     0.000973709834469
+               chmod                     2     0.000973709834469
+         getpriority                     2     0.000973709834469
+               rmdir                     2     0.000973709834469
+              execve                     2     0.000973709834469
+           ftruncate                     2     0.000973709834469
+         setpriority                     2     0.000973709834469
+               ioctl                     2     0.000973709834469
+        clock_getres                     1     0.000486854917235
+   sched_getaffinity                     1     0.000486854917235
+              getpid                     1     0.000486854917235
+             getppid                     1     0.000486854917235
+             seccomp                     1     0.000486854917235
+             unshare                     1     0.000486854917235
+              getcwd                     1     0.000486854917235
+            pwrite64                     1     0.000486854917235
++++ killed by SIGINT +++
+                     1     0.000486854917235
+            shutdown                     1     0.000486854917235
+           faccessat                     1     0.000486854917235
+--- SIGINT {si_signo=SIGINT, si_code=SI_KERNEL} ---
+                     1     0.000486854917235
+           fadvise64                     1     0.000486854917235
+     set_robust_list                     1     0.000486854917235
+       inotify_init1                     1     0.000486854917235
+              rename                     1     0.000486854917235
+               prctl                     1     0.000486854917235
+              tgkill                     1     0.000486854917235
+--- SIGINT {si_signo=SIGINT, si_code=SI_TKILL, si_pid=7876, si_uid=1002} ---
+                     1     0.000486854917235
+     set_tid_address                     1     0.000486854917235

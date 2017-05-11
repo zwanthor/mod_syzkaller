@@ -1,0 +1,54 @@
+                Call  Number of calls made  Percentage of total calls
+                open                  3086         37.6617036856
+               fstat                  1008         12.3016841591
+                read                   967         11.8013180376
+              select                   859         10.4832804491
+                stat                   843         10.2880156212
+               close                   484         5.90676104467
+               lseek                   358         4.36905052477
+                mmap                    98         1.19599707103
+              sendto                    91         1.11056870881
+        rt_sigaction                    67        0.817671466927
+               lstat                    53        0.646814742495
+                 brk                    45        0.549182328533
+            getdents                    40        0.488162069807
+            mprotect                    34        0.414937759336
+              access                    31        0.378325604101
+              munmap                    18        0.219672931413
+               write                    15        0.183060776178
+            shutdown                    13        0.158652672687
+              accept                    13        0.158652672687
+               ioctl                    13        0.158652672687
+            recvfrom                    13        0.158652672687
+         getsockname                     4       0.0488162069807
+            readlink                     4       0.0488162069807
+               fcntl                     3       0.0366121552355
+              socket                     3       0.0366121552355
+              signal                     3       0.0366121552355
+               uname                     2       0.0244081034904
+             connect                     2       0.0244081034904
+               futex                     2       0.0244081034904
+              getgid                     1       0.0122040517452
+                bind                     1       0.0122040517452
+             geteuid                     1       0.0122040517452
+          arch_prctl                     1       0.0122040517452
+--- SIGINT {si_signo=SIGINT, si_code=SI_KERNEL} ---
+                     1       0.0122040517452
+           getrlimit                     1       0.0122040517452
+     set_tid_address                     1       0.0122040517452
+              listen                     1       0.0122040517452
+              getcwd                     1       0.0122040517452
+        rt_sigreturn                     1       0.0122040517452
+     set_robust_list                     1       0.0122040517452
+          exit_group                     1       0.0122040517452
++++ exited with 0 +++
+                     1       0.0122040517452
+             sysinfo                     1       0.0122040517452
+              execve                     1       0.0122040517452
+               wait4                     1       0.0122040517452
+          setsockopt                     1       0.0122040517452
+              getuid                     1       0.0122040517452
+               pipe2                     1       0.0122040517452
+              statfs                     1       0.0122040517452
+             getegid                     1       0.0122040517452
+      rt_sigprocmask                     1       0.0122040517452
