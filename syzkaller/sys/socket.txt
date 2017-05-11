@@ -1,0 +1,106 @@
+# Copyright 2017 syzkaller project authors. All rights reserved.
+# Use of this source code is governed by Apache 2 LICENSE that can be found in the LICENSE file.
+
+# TODO: due to autobind a socket can bind to port 0, that will result in a random port which is not reproducible
+
+include <linux/socket.h>
+include <linux/net.h>
+include <linux/net_tstamp.h>
+include <uapi/linux/in.h>
+include <asm/ioctls.h>
+
+resource sock[fd]
+
+socket(domain flags[socket_domain], type flags[socket_type], proto int8) sock
+socketpair(domain flags[socket_domain], type flags[socket_type], proto int8, fds ptr[out, pipefd])
+accept(fd sock, peer ptr[out, sockaddr, opt], peerlen ptr[inout, len[peer, int32]]) sock
+accept4(fd sock, peer ptr[out, sockaddr, opt], peerlen ptr[inout, len[peer, int32]], flags flags[accept_flags]) sock
+bind(fd sock, addr ptr[in, sockaddr], addrlen len[addr])
+listen(fd sock, backlog int32)
+connect(fd sock, addr ptr[in, sockaddr], addrlen len[addr])
+shutdown(fd sock, how flags[shutdown_flags])
+sendto(fd sock, buf buffer[in], len len[buf], f flags[send_flags], addr ptr[in, sockaddr, opt], addrlen len[addr])
+sendmsg(fd sock, msg ptr[in, send_msghdr], f flags[send_flags])
+sendmmsg(fd sock, mmsg ptr[in, array[send_msghdr]], vlen len[mmsg], f flags[send_flags])
+recvfrom(fd sock, buf buffer[out], len len[buf], f flags[recv_flags], addr ptr[in, sockaddr, opt], addrlen len[addr])
+recvmsg(fd sock, msg ptr[in, recv_msghdr], f flags[recv_flags])
+recvmmsg(fd sock, mmsg ptr[in, array[recv_msghdr]], vlen len[mmsg], f flags[recv_flags])
+getsockname(fd sock, addr ptr[out, sockaddr], addrlen ptr[inout, len[addr, int32]])
+getpeername(fd sock, peer ptr[out, sockaddr], peerlen ptr[inout, len[peer, int32]])
+getsockopt(fd sock, level int32, optname int32, optval buffer[out], optlen ptr[inout, len[optval, int32]])
+setsockopt(fd sock, level int32, optname int32, optval buffer[in], optlen len[optval])
+ioctl$SIOCOUTQ(fd sock, cmd const[SIOCOUTQ], arg ptr[out, int32])
+ioctl$SIOCINQ(fd sock, cmd const[SIOCINQ], arg ptr[out, int32])
+
+# SOL_SOCKET
+setsockopt$sock_void(fd sock, level const[SOL_SOCKET], optname flags[sockopt_opt_sock_void], optval const[0], optlen const[0])
+getsockopt$sock_int(fd sock, level const[SOL_SOCKET], optname flags[sockopt_opt_sock_int], optval ptr[out, int32], optlen ptr[inout, len[optval, int32]])
+setsockopt$sock_int(fd sock, level const[SOL_SOCKET], optname flags[sockopt_opt_sock_int], optval ptr[in, int32], optlen len[optval])
+setsockopt$sock_str(fd sock, level const[SOL_SOCKET], optname const[SO_BINDTODEVICE], optval ptr[in, string], optlen len[optval])
+getsockopt$sock_linger(fd sock, level const[SOL_SOCKET], optname const[SO_LINGER], optval ptr[out, linger], optlen ptr[inout, len[optval, int32]])
+setsockopt$sock_linger(fd sock, level const[SOL_SOCKET], optname const[SO_LINGER], optval ptr[in, linger], optlen len[optval])
+getsockopt$sock_cred(fd sock, level const[SOL_SOCKET], optname const[SO_PEERCRED], optval ptr[out, ucred], optlen ptr[inout, len[optval, int32]])
+setsockopt$sock_cred(fd sock, level const[SOL_SOCKET], optname const[SO_PEERCRED], optval ptr[in, ucred], optlen len[optval])
+getsockopt$sock_timeval(fd sock, level const[SOL_SOCKET], optname flags[sockopt_opt_sock_timeval], optval ptr[out, timeval], optlen ptr[inout, len[optval, int32]])
+setsockopt$sock_timeval(fd sock, level const[SOL_SOCKET], optname flags[sockopt_opt_sock_timeval], optval ptr[in, timeval], optlen len[optval])
+setsockopt$sock_attach_bpf(fd sock, level const[SOL_SOCKET], optname const[SO_ATTACH_BPF], optval ptr[in, fd_bpf_prog], optlen len[optval])
+setsockopt$SO_TIMESTAMPING(fd sock, level const[SOL_SOCKET], optname const[SO_TIMESTAMPING], optval ptr[in, flags[sockopt_so_timestamping, int32]], optlen len[optval])
+getsockopt$SO_TIMESTAMPING(fd sock, level const[SOL_SOCKET], optname const[SO_TIMESTAMPING], optval ptr[out, int32], optlen ptr[inout, len[optval, int32]])
+setsockopt$SO_ATTACH_FILTER(fd sock, level const[SOL_SOCKET], optname const[SO_ATTACH_FILTER], optval ptr[in, sock_fprog], optlen len[optval])
+getsockopt$sock_buf(fd sock, level const[SOL_SOCKET], optname flags[sockopt_opt_sock_buf], optval buffer[out], optlen ptr[inout, len[optval, int32]])
+
+socket_domain = AF_UNIX, AF_INET, AF_INET6, AF_IPX, AF_NETLINK, AF_X25, AF_AX25, AF_ATMPVC, AF_APPLETALK, AF_PACKET
+socket_type = SOCK_STREAM, SOCK_DGRAM, SOCK_SEQPACKET, SOCK_RAW, SOCK_RDM, SOCK_PACKET, SOCK_NONBLOCK, SOCK_CLOEXEC
+accept_flags = SOCK_NONBLOCK, SOCK_CLOEXEC
+shutdown_flags  = SHUT_RD, SHUT_WR
+send_flags = MSG_CONFIRM, MSG_DONTROUTE, MSG_DONTWAIT, MSG_EOR, MSG_MORE, MSG_NOSIGNAL, MSG_OOB, MSG_PROBE, MSG_BATCH, MSG_FASTOPEN
+recv_flags = MSG_CMSG_CLOEXEC, MSG_DONTWAIT, MSG_ERRQUEUE, MSG_OOB, MSG_PEEK, MSG_TRUNC, MSG_WAITALL, MSG_WAITFORONE
+sockopt_opt_sock_void = SO_DETACH_FILTER, SO_MARK
+sockopt_opt_sock_int = SO_ACCEPTCONN, SO_BROADCAST, SO_DEBUG, SO_DOMAIN, SO_ERROR, SO_DONTROUTE, SO_KEEPALIVE, SO_PEEK_OFF, SO_PRIORITY, SO_PROTOCOL, SO_RCVBUF, SO_RCVBUFFORCE, SO_RCVLOWAT, SO_SNDLOWAT, SO_REUSEADDR, SO_SNDBUF, SO_SNDBUFFORCE, SO_TIMESTAMP, SO_TYPE, SO_REUSEPORT, SO_OOBINLINE, SO_NO_CHECK, SO_PASSCRED, SO_TIMESTAMPNS, SO_LOCK_FILTER, SO_PASSSEC, SO_RXQ_OVFL, SO_WIFI_STATUS, SO_NOFCS, SO_SELECT_ERR_QUEUE, SO_BUSY_POLL, SO_MAX_PACING_RATE
+sockopt_opt_sock_timeval = SO_RCVTIMEO, SO_SNDTIMEO
+sockopt_opt_sock_buf = SO_BINDTODEVICE, SO_PEERCRED, SO_PEERNAME, SO_PEERSEC, SO_GET_FILTER
+sockopt_so_timestamping = SOF_TIMESTAMPING_TX_HARDWARE, SOF_TIMESTAMPING_TX_SOFTWARE, SOF_TIMESTAMPING_RX_HARDWARE, SOF_TIMESTAMPING_RX_SOFTWARE, SOF_TIMESTAMPING_SOFTWARE, SOF_TIMESTAMPING_SYS_HARDWARE, SOF_TIMESTAMPING_RAW_HARDWARE, SOF_TIMESTAMPING_OPT_ID, SOF_TIMESTAMPING_TX_SCHED, SOF_TIMESTAMPING_TX_ACK, SOF_TIMESTAMPING_OPT_CMSG, SOF_TIMESTAMPING_OPT_TSONLY
+sock_level = IPPROTO_ICMP, SOL_IP, SOL_TCP, SOL_UDP, SOL_IPV6, SOL_ICMPV6, SOL_SCTP, SOL_UDPLITE, SOL_RAW, SOL_IPX, SOL_AX25, SOL_ATALK, SOL_NETROM, SOL_ROSE, SOL_DECNET, SOL_PACKET, SOL_ATM, SOL_AAL, SOL_IRDA, SOL_NETBEUI, SOL_LLC, SOL_DCCP, SOL_NETLINK, SOL_TIPC, SOL_RXRPC, SOL_PPPOL2TP, SOL_BLUETOOTH, SOL_PNPIPE, SOL_RDS, SOL_IUCV, SOL_CAIF, SOL_ALG, SOL_NFC, SOL_KCM
+
+sockaddr [
+	un		sockaddr_un
+	in		sockaddr_in
+	in6		sockaddr_in6
+	nl		sockaddr_nl
+	ax25		sockaddr_ax25
+	alg		sockaddr_alg
+	nfc		sockaddr_nfc
+	nfc_llcp	sockaddr_nfc_llcp
+	hci		sockaddr_hci
+	sco		sockaddr_sco
+	l2		sockaddr_l2
+	rc		sockaddr_rc
+# TODO: other kinds of sockaddrs
+] [varlen]
+
+send_msghdr {
+	addr	ptr[in, sockaddr, opt]
+	addrlen	len[addr, int32]
+	vec	ptr[in, array[iovec_in]]
+	vlen	len[vec, intptr]
+	ctrl	ptr[in, array[cmsghdr]]
+	ctrllen	len[ctrl, intptr]
+	f	flags[send_flags, int32]
+}
+
+recv_msghdr {
+	addr	ptr[out, sockaddr, opt]
+	addrlen	len[addr, int32]
+	vec	ptr[in, array[iovec_out]]
+	vlen	len[vec, intptr]
+	ctrl	buffer[out]
+	ctrllen	len[ctrl, intptr]
+	f	int32
+}
+
+cmsghdr {
+	len	len[parent, intptr]
+	level	flags[sock_level, int32]
+	type	int32
+	data	array[int8]
+} [align_ptr]

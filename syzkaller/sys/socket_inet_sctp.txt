@@ -1,0 +1,324 @@
+# Copyright 2017 syzkaller project authors. All rights reserved.
+# Use of this source code is governed by Apache 2 LICENSE that can be found in the LICENSE file.
+
+# AF_INET and AF_INET6: SCTP support
+
+include <linux/sctp.h>
+include <asm/ioctls.h>
+
+resource sock_sctp[sock]
+
+socket$sctp(domain const[AF_INET], type flags[sctp_socket_type], proto const[IPPROTO_SCTP]) sock_sctp
+socket$sctp6(domain const[AF_INET6], type flags[sctp_socket_type], proto const[IPPROTO_SCTP]) sock_sctp
+socketpair$sctp(domain const[AF_INET], type flags[sctp_socket_type], proto const[IPPROTO_SCTP], fds ptr[out, sctp_pair])
+bind$sctp(fd sock_sctp, addr ptr[in, sockaddr_sctp], addrlen len[addr])
+connect$sctp(fd sock_sctp, addr ptr[in, sockaddr_sctp], addrlen len[addr])
+accept$sctp(fd sock_sctp, peer ptr[out, sockaddr_sctp, opt], peerlen ptr[inout, len[peer, int32]]) sock_sctp
+accept4$sctp(fd sock_sctp, peer ptr[out, sockaddr_sctp, opt], peerlen ptr[inout, len[peer, int32]], flags flags[accept_flags]) sock_sctp
+sendto$sctp(fd sock_sctp, buf buffer[in], len len[buf], f flags[send_flags], addr ptr[in, sockaddr_sctp, opt], addrlen len[addr])
+sendmsg$sctp(fd sock_sctp, msg ptr[in, msghdr_sctp], f flags[send_flags])
+sendmmsg$sctp(fd sock_sctp, mmsg ptr[in, array[msghdr_sctp]], vlen len[mmsg], f flags[send_flags])
+recvfrom$sctp(fd sock_sctp, buf buffer[out], len len[buf], f flags[recv_flags], addr ptr[in, sockaddr_sctp, opt], addrlen len[addr])
+getsockname$sctp(fd sock_sctp, addr ptr[out, sockaddr_sctp], addrlen ptr[inout, len[addr, int32]])
+getpeername$sctp(fd sock_sctp, peer ptr[out, sockaddr_sctp], peerlen ptr[inout, len[peer, int32]])
+
+setsockopt$SCTP_SOCKOPT_BINDX_ADD(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_SOCKOPT_BINDX_ADD], val ptr[in, array[sockaddr_sctp]], len bytesize[val])
+setsockopt$SCTP_SOCKOPT_BINDX_REM(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_SOCKOPT_BINDX_REM], val ptr[in, array[sockaddr_sctp]], len len[val])
+setsockopt$SCTP_SOCKOPT_CONNECTX_OLD(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_SOCKOPT_CONNECTX_OLD], val ptr[in, sockaddr_sctp], len len[val])
+setsockopt$SCTP_SOCKOPT_CONNECTX(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_SOCKOPT_CONNECTX], val ptr[in, sockaddr_sctp], len len[val])
+setsockopt$SCTP_DISABLE_FRAGMENTS(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_DISABLE_FRAGMENTS], val ptr[in, int32], len len[val])
+setsockopt$SCTP_EVENTS(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_EVENTS], val ptr[in, sctp_event_subscribe], len len[val])
+setsockopt$SCTP_AUTOCLOSE(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_AUTOCLOSE], val ptr[in, int32], len len[val])
+setsockopt$SCTP_PEER_ADDR_PARAMS(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_PEER_ADDR_PARAMS], val ptr[in, sctp_paddrparams], len len[val])
+setsockopt$SCTP_DELAYED_SACK(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_DELAYED_SACK], val ptr[in, sctp_delayed_sack], len len[val])
+setsockopt$SCTP_PARTIAL_DELIVERY_POINT(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_PARTIAL_DELIVERY_POINT], val ptr[in, int32], len len[val])
+setsockopt$SCTP_INITMSG(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_INITMSG], val ptr[in, sctp_initmsg], len len[val])
+setsockopt$SCTP_DEFAULT_SEND_PARAM(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_DEFAULT_SEND_PARAM], val ptr[in, sctp_sndrcvinfo], len len[val])
+setsockopt$SCTP_DEFAULT_SNDINFO(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_DEFAULT_SNDINFO], val ptr[in, sctp_sndinfo], len len[val])
+setsockopt$SCTP_PRIMARY_ADDR(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_PRIMARY_ADDR], val ptr[in, sctp_prim], len len[val])
+setsockopt$SCTP_SET_PEER_PRIMARY_ADDR(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_SET_PEER_PRIMARY_ADDR], val ptr[in, sctp_prim], len len[val])
+setsockopt$SCTP_NODELAY(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_NODELAY], val ptr[in, int32], len len[val])
+setsockopt$SCTP_RTOINFO(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_RTOINFO], val ptr[in, sctp_rtoinfo], len len[val])
+setsockopt$SCTP_ASSOCINFO(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_ASSOCINFO], val ptr[in, sctp_assocparams], len len[val])
+setsockopt$SCTP_I_WANT_MAPPED_V4_ADDR(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_I_WANT_MAPPED_V4_ADDR], val ptr[in, int32], len len[val])
+setsockopt$SCTP_MAXSEG(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_MAXSEG], val ptr[in, sctp_maxseg], len len[val])
+setsockopt$SCTP_ADAPTATION_LAYER(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_ADAPTATION_LAYER], val ptr[in, int32], len len[val])
+setsockopt$SCTP_CONTEXT(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_CONTEXT], val ptr[in, sctp_assoc_value], len len[val])
+setsockopt$SCTP_FRAGMENT_INTERLEAVE(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_FRAGMENT_INTERLEAVE], val ptr[in, int32], len len[val])
+setsockopt$SCTP_MAX_BURST(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_MAX_BURST], val ptr[in, sctp_max_burst], len len[val])
+setsockopt$SCTP_AUTH_CHUNK(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_AUTH_CHUNK], val ptr[in, int8], len len[val])
+setsockopt$SCTP_HMAC_IDENT(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_HMAC_IDENT], val ptr[in, sctp_hmacalgo], len len[val])
+setsockopt$SCTP_AUTH_KEY(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_AUTH_KEY], val ptr[in, sctp_authkey], len len[val])
+setsockopt$SCTP_AUTH_ACTIVE_KEY(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_AUTH_ACTIVE_KEY], val ptr[in, sctp_authkeyid], len len[val])
+setsockopt$SCTP_AUTH_DELETE_KEY(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_AUTH_DELETE_KEY], val ptr[in, sctp_authkeyid], len len[val])
+setsockopt$SCTP_AUTO_ASCONF(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_AUTO_ASCONF], val ptr[in, int32], len len[val])
+setsockopt$SCTP_PEER_ADDR_THLDS(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_PEER_ADDR_THLDS], val ptr[in, sctp_paddrthlds], len len[val])
+setsockopt$SCTP_RECVRCVINFO(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_RECVRCVINFO], val ptr[in, int32], len len[val])
+setsockopt$SCTP_RECVNXTINFO(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_RECVNXTINFO], val ptr[in, int32], len len[val])
+
+getsockopt$SCTP_STATUS(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_STATUS], val ptr[inout, sctp_status], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_DISABLE_FRAGMENTS(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_DISABLE_FRAGMENTS], val ptr[out, int32], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_EVENTS(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_EVENTS], val ptr[out, sctp_event_subscribe], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_AUTOCLOSE(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_AUTOCLOSE], val ptr[out, int32], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_SOCKOPT_PEELOFF(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_SOCKOPT_PEELOFF], val ptr[inout, sctp_peeloff_arg_t], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_PEER_ADDR_PARAMS(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_PEER_ADDR_PARAMS], val ptr[inout, sctp_paddrparams], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_DELAYED_SACK(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_DELAYED_SACK], val ptr[inout, sctp_sack_info], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_INITMSG(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_INITMSG], val ptr[out, sctp_initmsg], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_GET_PEER_ADDRS(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_GET_PEER_ADDRS], val ptr[inout, sctp_getaddrs], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_GET_LOCAL_ADDRS(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_GET_LOCAL_ADDRS], val ptr[inout, sctp_getaddrs], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_SOCKOPT_CONNECTX3(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_SOCKOPT_CONNECTX3], val ptr[inout, sctp_getaddrs_old], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_DEFAULT_SEND_PARAM(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_DEFAULT_SEND_PARAM], val ptr[inout, sctp_sndrcvinfo], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_DEFAULT_SNDINFO(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_DEFAULT_SNDINFO], val ptr[inout, sctp_sndinfo], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_PRIMARY_ADDR(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_PRIMARY_ADDR], val ptr[inout, sctp_prim], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_NODELAY(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_NODELAY], val ptr[out, int32], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_RTOINFO(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_RTOINFO], val ptr[inout, sctp_rtoinfo], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_ASSOCINFO(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_ASSOCINFO], val ptr[inout, sctp_sndinfo], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_I_WANT_MAPPED_V4_ADDR(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_I_WANT_MAPPED_V4_ADDR], val ptr[out, int32], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_MAXSEG(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_MAXSEG], val ptr[inout, sctp_assoc_value], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_GET_PEER_ADDR_INFO(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_GET_PEER_ADDR_INFO], val ptr[inout, sctp_paddrinfo], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_ADAPTATION_LAYER(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_ADAPTATION_LAYER], val ptr[out, sctp_setadaptation], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_CONTEXT(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_CONTEXT], val ptr[inout, sctp_assoc_value], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_FRAGMENT_INTERLEAVE(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_FRAGMENT_INTERLEAVE], val ptr[out, int32], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_PARTIAL_DELIVERY_POINT(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_PARTIAL_DELIVERY_POINT], val ptr[inout, sctp_assoc_value], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_MAX_BURST(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_MAX_BURST], val ptr[out, int32], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_HMAC_IDENT(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_HMAC_IDENT], val ptr[inout, sctp_authkeyid], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_AUTH_ACTIVE_KEY(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_AUTH_ACTIVE_KEY], val ptr[inout, sctp_authkeyid], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_PEER_AUTH_CHUNKS(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_PEER_AUTH_CHUNKS], val ptr[inout, sctp_authchunks], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_LOCAL_AUTH_CHUNKS(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_LOCAL_AUTH_CHUNKS], val ptr[inout, sctp_authchunks], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_GET_ASSOC_NUMBER(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_GET_ASSOC_NUMBER], val ptr[out, int32], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_GET_ASSOC_ID_LIST(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_GET_ASSOC_ID_LIST], val ptr[out, sctp_assoc_ids], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_AUTO_ASCONF(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_AUTO_ASCONF], val ptr[out, int32], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_PEER_ADDR_THLDS(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_PEER_ADDR_THLDS], val ptr[inout, sctp_paddrthlds], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_GET_ASSOC_STATS(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_GET_ASSOC_STATS], val ptr[inout, sctp_assoc_stats], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_RECVRCVINFO(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_RECVRCVINFO], val ptr[out, int32], len ptr[inout, len[val, int32]] )
+getsockopt$SCTP_RECVNXTINFO(fd sock_sctp, level const[SOL_SCTP], opt const[SCTP_RECVNXTINFO], val ptr[out, int32], len ptr[inout, len[val, int32]] )
+
+ioctl$SCTP_SIOCINQ(fd sock_sctp, cmd const[SIOCINQ], arg ptr[out, int32])
+
+sctp_socket_type = SOCK_STREAM, SOCK_SEQPACKET
+sctp_sndrcv_flags = SCTP_UNORDERED, SCTP_ADDR_OVER, SCTP_ABORT, SCTP_EOF
+sctp_spp_flags = SPP_HB_ENABLE, SPP_HB_DISABLE, SPP_HB_DEMAND, SPP_HB_TIME_IS_ZERO, SPP_PMTUD_ENABLE, SPP_PMTUD_DISABLE, SPP_SACKDELAY_ENABLE, SPP_SACKDELAY_DISABLE
+
+sctp_pair {
+	fd0	sock_sctp
+	fd1	sock_sctp
+}
+
+sockaddr_sctp [
+	in	sockaddr_in
+	in6	sockaddr_in6
+] [varlen]
+
+sockaddr_storage_sctp [
+	in	sockaddr_storage_in
+	in6	sockaddr_storage_in6
+]
+
+msghdr_sctp {
+	addr	ptr[in, sockaddr_sctp]
+	addrlen	len[addr, int32]
+	vec	ptr[in, array[iovec_in]]
+	vlen	len[vec, intptr]
+	ctrl	ptr[in, array[cmsghdr_sctp], opt]
+	ctrllen	len[ctrl, intptr]
+	f	flags[send_flags, int32]
+}
+
+cmsghdr_sctp [
+	init	cmsghdr_sctp_init
+	sndrcv	cmsghdr_sctp_sndrcv
+	sndinfo	cmsghdr_sctp_sndinfo
+]
+
+cmsghdr_sctp_init {
+	len	len[parent, intptr]
+	level	const[IPPROTO_SCTP, int32]
+	type	const[SCTP_INIT, int32]
+	msg	sctp_initmsg
+}
+
+sctp_initmsg {
+	nostr	int16
+	minstr	int16
+	maxatt	int16
+	maxinit	int16
+}
+
+cmsghdr_sctp_sndrcv {
+	len	len[parent, intptr]
+	level	const[IPPROTO_SCTP, int32]
+	type	const[SCTP_SNDRCV, int32]
+	msg	sctp_sndrcvinfo
+}
+
+sctp_sndrcvinfo {
+	stream	int16
+	ssn	int16
+	flags	flags[sctp_sndrcv_flags, int16]
+	ppid	int32
+	context	int32
+	ttl	int32
+	tsn	int32
+	cumtsn	int32
+	assoc	int32
+}
+
+cmsghdr_sctp_sndinfo {
+	len	len[parent, intptr]
+	level	const[IPPROTO_SCTP, int32]
+	type	const[SCTP_SNDINFO, int32]
+	msg	sctp_sndinfo
+}
+
+sctp_sndinfo {
+	sid	int16
+	flags	flags[sctp_sndrcv_flags, int16]
+	ppid	int32
+	context	int32
+	assoc	int32
+}
+
+sctp_delayed_sack [
+	sack	sctp_sack_info
+	assoc	sctp_assoc_value
+] [varlen]
+
+sctp_sack_info {
+	assoc 	int32
+	delay	int32
+	freq	int32
+}
+
+sctp_maxseg [
+	assoc	sctp_assoc_value
+	int	int32
+] [varlen]
+
+sctp_max_burst [
+	assoc	sctp_assoc_value
+	int	int32
+] [varlen]
+
+sctp_assoc_value {
+	assoc	int32
+	value	int32
+}
+
+
+sctp_event_subscribe {
+	ev	array[int8, 10]
+}
+
+sctp_paddrparams {
+	assoc	int32
+	addr	sockaddr_storage_sctp
+	interv	int32
+	maxrxt	int16
+	pathmtu	int32
+	sackdel	int32
+	spp	int32
+	flags	flags[sctp_spp_flags, int32]
+} [packed, align_4]
+
+sctp_authkey {
+	assoc	int32
+	keynum	int16
+	keylen	len[key, int16]
+	key	array[int8]
+}
+
+sctp_prim {
+	assoc	int32
+	addr	sockaddr_storage_sctp
+} [packed, align_4]
+
+sctp_rtoinfo {
+	assoc	int32
+	init	int32
+	max	int32
+	min	int32
+}
+
+sctp_assocparams {
+	assoc	int32
+	maxrxt	int16
+	ndest	int16
+	prwnd	int32
+	lrwnd	int32
+	life	int32
+}
+
+sctp_hmacalgo {
+	nident	len[ident, int32]
+	ident	array[int16]
+}
+
+sctp_authkeyid {
+	assoc	int32
+	keyn	int16
+}
+
+sctp_paddrthlds {
+	assoc	int32
+	addr	sockaddr_storage_sctp
+	maxrxt	int16
+	pfthld	int16
+}
+
+sctp_paddrinfo {
+	assoc   int32
+	addr    sockaddr_storage_sctp
+	state   int32
+	cwnd    int32
+	srtt    int32
+	rto     int32
+	mtu     int32
+} [packed, align_4]
+
+sctp_status {
+	assoc   int32
+	state   int32
+	rwnd    int32
+	unpack  int16
+	pend    int16
+	in      int16
+	out     int16
+	frag    int32
+	prim    sctp_paddrinfo
+}
+
+sctp_getaddrs_old {
+	assoc	int32
+	num	int32
+	addrs	ptr[in, sockaddr_sctp]
+}
+
+sctp_getaddrs {
+	assoc	int32
+	num	int32
+	addrs	int8
+}
+
+sctp_peeloff_arg_t {
+	assoc	int32
+	sd	int32
+}
+
+sctp_assoc_stats {
+	assoc	int32
+	rto	sockaddr_storage_sctp
+	status	array[int64, 15]
+}
+
+sctp_assoc_ids {
+	num	int32
+	assoc	array[int32]
+}
+
+sctp_authchunks {
+	chunk	int8
+}
+
+sctp_setadaptation {
+	adpt	int32
+}

@@ -1,0 +1,10 @@
+*.swp
+*~
+*.cfg
+workdir*
+
+bin/
+sys/sys_amd64.go
+sys/sys_arm64.go
+sys/sys_ppc64le.go
+executor/syscalls.h

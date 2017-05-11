@@ -1,0 +1,142 @@
+# Copyright 2015 syzkaller project authors. All rights reserved.
+# Use of this source code is governed by Apache 2 LICENSE that can be found in the LICENSE file.
+
+include <asm/ioctls.h>
+include <linux/stat.h>
+include <uapi/linux/fuse.h>
+
+resource fd_fuse[fd]
+
+syz_fuse_mount(target ptr[in, filename], mode flags[fuse_mode], uid uid, gid gid, maxread intptr, flags flags[mount_flags]) fd_fuse
+syz_fuseblk_mount(target ptr[in, filename], blkdev ptr[in, filename], mode flags[fuse_mode], uid uid, gid gid, maxread intptr, blksize intptr, flags flags[mount_flags]) fd_fuse
+ioctl$FUSE_DEV_IOC_CLONE(fd fd_fuse, cmd const[FUSE_DEV_IOC_CLONE], arg ptr[in, fd_fuse])
+write$fuse_init(fd fd_fuse, arg ptr[in, fuse_init_out], len len[arg])
+write$fuse_interrupt(fd fd_fuse, arg ptr[in, fuse_interrupt_out], len len[arg])
+write$fuse_bmap(fd fd_fuse, arg ptr[in, fuse_bmap_out], len len[arg])
+write$fuse_ioctl(fd fd_fuse, arg ptr[in, fuse_ioctl_out], len len[arg])
+write$fuse_poll(fd fd_fuse, arg ptr[in, fuse_poll_out], len len[arg])
+write$fuse_notify_poll_wakeup(fd fd_fuse, arg ptr[in, fuse_notify_poll_wakeup_out], len len[arg])
+write$fuse_notify_inval_inode(fd fd_fuse, arg ptr[in, fuse_notify_inval_inode_out], len len[arg])
+write$fuse_notify_inval_entry(fd fd_fuse, arg ptr[in, fuse_notify_inval_entry_out], len len[arg])
+write$fuse_notify_delete(fd fd_fuse, arg ptr[in, fuse_notify_delete_out], len len[arg])
+write$fuse_notify_store(fd fd_fuse, arg ptr[in, fuse_notify_store_out], len len[arg])
+write$fuse_notify_retrieve(fd fd_fuse, arg ptr[in, fuse_notify_retrieve_out], len len[arg])
+
+# 1 stands for default_permissions, 2 - allow_other
+fuse_mode = 1, 2, S_IFREG, S_IFCHR, S_IFBLK, S_IFIFO, S_IFSOCK, S_IFLNK, S_IFDIR
+
+fuse_init_out {
+	len	len[parent, int32]
+	err	int32
+	unique	int64
+
+	maj	int32
+	min	int32
+	readah	int32
+	flags	int32
+	backg	int16
+	congest	int16
+	maxwr	int32
+	timegr	int32
+	unused0	const[0, int32]
+	unused1	const[0, int32]
+	unused2	const[0, int32]
+	unused3	const[0, int32]
+	unused4	const[0, int32]
+	unused5	const[0, int32]
+	unused6	const[0, int32]
+	unused7	const[0, int32]
+	unused8	const[0, int32]
+}
+
+fuse_interrupt_out {
+	len	len[parent, int32]
+	err	int32
+	unique	int64
+}
+
+fuse_bmap_out {
+	len	len[parent, int32]
+	err	int32
+	unique	int64
+
+	block	int64
+}
+
+fuse_ioctl_out {
+	len	len[parent, int32]
+	err	int32
+	unique	int64
+
+	res	int32
+	flags	int32
+	iniovs	int32
+	outiovs	int32
+}
+
+fuse_poll_out {
+	len	len[parent, int32]
+	err	int32
+	unique	int64
+
+	revents	int32
+}
+
+fuse_notify_poll_wakeup_out {
+	len	len[parent, int32]
+	err	int32
+	unique	const[0, int64]
+
+	kh	int16
+}
+
+fuse_notify_inval_inode_out {
+	len1	len[parent, int32]
+	err	int32
+	unique	const[0, int64]
+
+	ino	int64
+	off	int64
+	len2	int16
+}
+
+fuse_notify_inval_entry_out {
+	len	len[parent, int32]
+	err	int32
+	unique	const[0, int64]
+
+	par	int64
+	namelen	int32
+}
+
+fuse_notify_delete_out {
+	len	len[parent, int32]
+	err	int32
+	unique	const[0, int64]
+
+	par	int64
+	child	int64
+	namelen	int32
+}
+
+fuse_notify_store_out {
+	len	len[parent, int32]
+	err	int32
+	unique	const[0, int64]
+
+	nodeid	int64
+	off	int64
+	size	int32
+}
+
+fuse_notify_retrieve_out {
+	len	len[parent, int32]
+	err	int32
+	unique1	const[0, int64]
+
+	unique2	int64
+	nodeid	int64
+	off	int64
+	size	int32
+}
+
