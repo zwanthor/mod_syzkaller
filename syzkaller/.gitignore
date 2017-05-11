@@ -1,6 +1,5 @@
 *.swp
 *~
-*.cfg
 workdir*
 
 bin/
