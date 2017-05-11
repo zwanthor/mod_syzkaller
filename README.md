@@ -43,12 +43,14 @@ https://github.com/zwanthor/mod_syzkaller/blob/master/syzkaller/prog/prio.go#L40
 The changes we made to the calculate prioties functions to take in the variables for system calls and their change in priority values are found at the above location
 
 https://github.com/zwanthor/mod_syzkaller/blob/master/syzkaller/prog/prio.go#L45
- At this location is where we added a loop to adjust the weight/priorities for the specified system calls in the config.
+At this location is where we added a loop to adjust the weight/priorities for the specified system calls in the config.
 
- https://github.com/zwanthor/mod_syzkaller/blob/master/syzkaller/syz-manager/manager.go#L700
- This is where we supply the priorities specified in the config to the priotities functions used during the fuzzing process.
+https://github.com/zwanthor/mod_syzkaller/blob/master/syzkaller/syz-manager/manager.go#L700
+This is where we supply the priorities specified in the config to the priotities functions used during the fuzzing process.
 
- ### Example
- Check out `my.cfg` to see an example of supplying modified priorities to specific system calls. Checkout specifically
- https://github.com/zwanthor/mod_syzkaller/blob/master/syzkaller/my.cfg#L19 to the end of the file. The format is as follows:
- 
+### Example
+Check out `my.cfg` to see an example of supplying modified priorities to specific system calls. Checkout specifically
+https://github.com/zwanthor/mod_syzkaller/blob/master/syzkaller/my.cfg#L19 to the end of the file. The config values to modify are `weight_syscalls` and `weight`. The format is as follows:
+
+"weight_syscalls": <array_of_system_calls>,
+"weight": <system_call_priority_multiplier>,
