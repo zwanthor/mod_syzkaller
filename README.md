@@ -50,4 +50,5 @@ https://github.com/zwanthor/mod_syzkaller/blob/master/syzkaller/prog/prio.go#L45
 
  ### Example
  Check out `my.cfg` to see an example of supplying modified priorities to specific system calls. Checkout specifically
- https://github.com/zwanthor/mod_syzkaller/blob/master/syzkaller/my.cfg#L19 to the end of the file.
+ https://github.com/zwanthor/mod_syzkaller/blob/master/syzkaller/my.cfg#L19 to the end of the file. The format is as follows:
+ 
